@@ -15,6 +15,7 @@ class Cursor(sprite.Sprite):
         self.isHovering = False
         self.isClicking = False
         self.object_dragged = None
+        self.isDragging = False
 
         # Sprites 
         self.cursor_1 = change_size(image_load('graphics/cursor/cursor_1.png'), self.size)
@@ -44,27 +45,20 @@ class Cursor(sprite.Sprite):
             if self.isHovering:
                 self.index = 3
             else:
-                self.index = 1       
+                self.index = 1
+
+
         if event.type == locals.MOUSEBUTTONUP:
             self.isClicking = False
-            self.object_dragged.isDragging = False
+            if self.object_dragged:
+                self.object_dragged.isDragging = False
+                self.object_dragged = None
             self.index = 0
-        
 
-    def mouse_interact(self, event, object_list):
-        if event.type == locals.MOUSEMOTION:
-            for object in object_list:
-                if object.rect.collidepoint(mouse.get_pos()):
-                    self.isHovering = True
-                    self.object_dragged = object
-                    
-                    if self.isClicking:
-                        object.isDragging = True
-                    break
-                else:
-                    self.isHovering = False
-                    self.index = 0
-                    
-                    object.isDragging = False
-                
+
+    def mouse_interact(self, object):
+        self.object_dragged = object
+        self.isDragging = True
+        self.object_dragged.isDragging = True
+
 

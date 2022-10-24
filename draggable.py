@@ -8,7 +8,7 @@ class Draggable(sprite.Sprite):
         self.image = self.component.image
         self.rect = self.component.rect
         self.isDragging = False
-
     def update(self):
         if self.isDragging:
             self.component.rect.center = mouse.get_pos()
+

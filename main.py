@@ -16,7 +16,7 @@ class Box(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(100, 100))
 
 
-class Game():
+class Game:
     def __init__(self):
         self.game_over = False
 
@@ -26,9 +26,12 @@ class Game():
         self.boxes = pygame.sprite.Group()
         
         self.cursor = cursor.Cursor()
-        self.box = Draggable(Box())
-        
-        self.boxes.add(self.box)
+
+        for i in range(3):
+            box = Draggable(Box())
+            box.rect.x += 150 * i
+
+            self.boxes.add(box)
         self.cursor_sprite.add(self.cursor)
         
 
@@ -37,9 +40,19 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
-                
+
+            if event.type == pygame.MOUSEMOTION:
+                for obj in self.boxes:
+                    if pygame.sprite.collide_rect(obj, self.cursor):
+                        self.cursor.isHovering = True
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for obj in self.boxes:
+                    if pygame.sprite.collide_rect(obj, self.cursor):
+                        self.cursor.mouse_interact(obj)
+
+
             self.cursor.mouse_click(event)
-            self.cursor.mouse_interact(event, self.boxes)
 
             
     def run_logic(self):
