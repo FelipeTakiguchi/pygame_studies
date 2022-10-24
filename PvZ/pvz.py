@@ -1,4 +1,6 @@
 import pygame
+from plant import Plant
+from enemy import Enemy
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
@@ -6,22 +8,24 @@ GAME_NAME = 'Plants vz Zombies'
 
 size = [SCREEN_WIDTH, SCREEN_HEIGHT]
 
-class Plant(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill("white")
-        self.rect = self.image.get_rect(topleft=(200, 200))
-
 
 class Game():
     def __init__(self):
         self.game_over = False
 
-        self.plant = Plant()
         self.sprite_group = pygame.sprite.Group()
+        self.plant_group = pygame.sprite.Group()
+        self.enemy_group = pygame.sprite.Group()
 
-        self.sprite_group.add(self.plant)
+        for i in range(5):
+            plant = Plant((200, 125 * (i + 1)))
+            self.plant_group.add(plant)
+            self.sprite_group.add(plant)
+
+        for i in range(5):
+            enemy = Enemy((1000, 125 * (i + 1)))
+            self.enemy_group.add(enemy)
+            self.sprite_group.add(enemy)
 
 
     def process_events(self):
@@ -30,13 +34,24 @@ class Game():
 
 
     def run_logic(self):
-        if not self.game_over: pass
+        if not self.game_over:
+            for enemy in self.enemy_group:
+                collide_plant = pygame.sprite.spritecollide(enemy, self.plant_group, False)
 
+                if collide_plant:
+                    enemy.speed = 0
+                    enemy.give_damage(collide_plant[0])
+                else:
+                    enemy.speed = 5
 
     def display_frame(self, screen):
         screen.fill('Black')
         if not self.game_over:
             self.sprite_group.draw(screen)
+            self.sprite_group.update()
+
+            for plant in self.plant_group:
+                plant.draw_range(screen=screen)
 
 
 def main():
@@ -47,7 +62,6 @@ def main():
 
     done = False
     clock = pygame.time.Clock()
-
     game = Game()
 
     while not done:
