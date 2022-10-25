@@ -37,6 +37,7 @@ class Game:
 
 
     def process_events(self):
+        flag = True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
@@ -45,10 +46,13 @@ class Game:
                 for obj in self.boxes:
                     if pygame.sprite.collide_rect(obj, self.cursor):
                         self.cursor.isHovering = True
+                    else:
+                        self.cursor.isHovering = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for obj in self.boxes:
-                    if pygame.sprite.collide_rect(obj, self.cursor):
+                    if pygame.sprite.collide_rect(obj, self.cursor) and flag:
+                        flag = False
                         self.cursor.mouse_interact(obj)
 
 
