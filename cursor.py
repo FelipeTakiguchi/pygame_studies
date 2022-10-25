@@ -36,7 +36,8 @@ class Cursor(sprite.Sprite):
 
         if self.isHovering and not self.isClicking:
             self.index = 2
-        
+        elif not self.isHovering:
+            self.index = 0
         
     def mouse_click(self, event):
         if event.type == locals.MOUSEBUTTONDOWN:
