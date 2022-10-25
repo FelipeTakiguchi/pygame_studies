@@ -45,10 +45,15 @@ class Game:
                 for obj in self.boxes:
                     if pygame.sprite.collide_rect(obj, self.cursor):
                         self.cursor.isHovering = True
+                    else:
+                        self.cursor.isHovering = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                flag = True
                 for obj in self.boxes:
-                    if pygame.sprite.collide_rect(obj, self.cursor):
+                    if pygame.sprite.collide_rect(obj, self.cursor) and flag:
+                        flag = False
+
                         self.cursor.mouse_interact(obj)
 
 
