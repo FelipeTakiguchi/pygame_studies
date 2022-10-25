@@ -38,16 +38,19 @@ class Game:
 
     def process_events(self):
         flag = True
+        flag2 = True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
 
             if event.type == pygame.MOUSEMOTION:
                 for obj in self.boxes:
-                    if pygame.sprite.collide_rect(obj, self.cursor):
-                        self.cursor.isHovering = True
-                    else:
-                        self.cursor.isHovering = False
+                    if flag2:
+                        if pygame.sprite.collide_rect(obj, self.cursor):
+                            flag2 = False
+                            self.cursor.isHovering = True
+                        else:
+                            self.cursor.isHovering = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for obj in self.boxes:
