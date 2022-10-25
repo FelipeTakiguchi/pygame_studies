@@ -36,8 +36,11 @@ class Cursor(sprite.Sprite):
 
         if self.isHovering and not self.isClicking:
             self.index = 2
-        
-        
+        elif self.isHovering:
+            self.index = 3
+        else:
+            self.index = 0
+
     def mouse_click(self, event):
         if event.type == locals.MOUSEBUTTONDOWN:
             self.isClicking = True
@@ -46,7 +49,6 @@ class Cursor(sprite.Sprite):
                 self.index = 3
             else:
                 self.index = 1
-
 
         if event.type == locals.MOUSEBUTTONUP:
             self.isClicking = False
@@ -60,5 +62,3 @@ class Cursor(sprite.Sprite):
         self.object_dragged = object
         self.isDragging = True
         self.object_dragged.isDragging = True
-
-
